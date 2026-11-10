@@ -22,7 +22,7 @@ public class AdatbazisKezelo
 
         using (var connection = new MySqlConnection(connectionString))
         {
-            var query = "SELECT * from diakok";
+            var query = "SELECT * from Karakterek";
 
             using (var command = new MySqlCommand(query, connection))
             {
@@ -34,7 +34,7 @@ public class AdatbazisKezelo
                     {
                         var karakter = new Karakter(
                             Convert.ToInt32(reader["id"].ToString()),
-                            reader["name"].ToString(),
+                            reader["nev"].ToString(),
                             reader["osztaly"].ToString(),
                             Convert.ToInt32(reader["szint"].ToString()),
                             Convert.ToInt32(reader["arany"].ToString()),
