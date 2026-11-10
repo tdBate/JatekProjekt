@@ -168,30 +168,49 @@ public class KarakterElemzo
     // Csoportosítsd a karaktereket az Osztaly tulajdonságuk alapján, és alakítsd át ToDictionary-vel úgy, hogy a kulcs az osztály neve, az érték pedig a karakterek darabszáma legyen!
     public Dictionary<string, int> OsztalyonkentKarakterSzam()
     {
-        throw new NotImplementedException();
+        var eredmeny = karakterek
+            .GroupBy(d => d.Osztaly)
+            .ToDictionary(k => k.Key, k => k.Count());
+
+        return eredmeny;
     }
 
     // Csoportosítsd a karaktereket a Szerver tulajdonságuk alapján, és számold meg, hány karakter játszik az egyes szervereken!
     public Dictionary<string, int> SzerverenKarakterekSzama()
     {
-        throw new NotImplementedException();
+        var eredmeny = karakterek
+            .GroupBy(k => k.Szerver)
+            .ToDictionary(
+                k => k.Key,
+                k => k.Count()
+            );
+        return eredmeny;
     }
 
     // Gyűjtsd ki az összes "Harcos" osztályú karakter azonosítóját (Id) egy listába!
     public List<int> HarcosokAzonositoi()
     {
-        throw new NotImplementedException();
+        var eredmeny = karakterek
+            .Where(k => k.Osztaly.Equals("Harcos"))
+            .Select(k => k.Id).ToList();
+
+        return eredmeny;
     }
 
     // Állapítsd meg, hogy van-e olyan 50-es szintnél magasabb Mágus, akinek 3000-nél kevesebb aranya van!
     public bool VanETolvajSpecKondicioval()
     {
-        throw new NotImplementedException();
+        var eredmeny = karakterek.Any(k => k.Osztaly.Equals("Mágus") && k.Szint > 50 && k.Arany < 3000);
+        return eredmeny;
     }
 
     // Keresd meg és add vissza a legmagasabb szintű karakter objektumát!
     public Karakter LegmagasabbSzintuKarakterObjektum()
     {
-        throw new NotImplementedException();
+        var eredmeny = karakterek
+            .OrderByDescending(k => k.Szint)
+            .FirstOrDefault();
+
+        return eredmeny;
     }
 }
