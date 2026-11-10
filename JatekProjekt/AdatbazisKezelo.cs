@@ -1,30 +1,52 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace JatekProjekt
+namespace JatekProjekt;
+
+public class AdatbazisKezelo
 {
+    private readonly string connectionString;
 
-    public class AdatbazisKezelo
+
+    public AdatbazisKezelo()
     {
-        private readonly string connectionString;
+        connectionString =
+            "server=localhost;database=JatekDb;uid=root;pwd=;"; // Irjuk meg a connectionstringet a megfelelő adatbázisra hivatkozva
+    }
 
 
-        public AdatbazisKezelo()
+    /// Beolvassa az összes karaktert az adatbázisból egy List
+    /// <Karakter>-be.
+    public List<Karakter> AdatokBetoltese()
+    {
+        var karakterek = new List<Karakter>();
+
+        using (var connection = new MySqlConnection(connectionString))
         {
+            var query = "SELECT * from diakok";
 
-            this.connectionString = "";// Irjuk meg a connectionstringet a megfelelő adatbázisra hivatkozva
+            using (var command = new MySqlCommand(query, connection))
+            {
+                connection.Open();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var karakter = new Karakter(
+                            Convert.ToInt32(reader["id"].ToString()),
+                            reader["name"].ToString(),
+                            reader["osztaly"].ToString(),
+                            Convert.ToInt32(reader["szint"].ToString()),
+                            Convert.ToInt32(reader["arany"].ToString()),
+                            reader["szerver"].ToString()
+                        );
+
+                        karakterek.Add(karakter);
+                    }
+                }
+            }
         }
 
-   
-        /// Beolvassa az összes karaktert az adatbázisból egy List<Karakter>-be.
-       
-        public List<Karakter> AdatokBetoltese()
-        {
-            var karakterek = new List<Karakter>();
-            
-            return karakterek;
-        }
+        return karakterek;
     }
 }
